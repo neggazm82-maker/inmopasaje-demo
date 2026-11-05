@@ -5,7 +5,7 @@ import { IconoEmail, IconoPin, IconoReloj, IconoTelefono } from "./Iconos";
 
 export default function Footer() {
   return (
-    <footer id="contacto" className="relative overflow-hidden bg-tinta text-white">
+    <footer className="relative overflow-hidden bg-tinta text-white">
       <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-azul-medio/10 blur-3xl" />
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3">
         <div>

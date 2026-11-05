@@ -6,6 +6,10 @@ import AvisoMuestra from "@/components/AvisoMuestra";
 import Reveal from "@/components/Reveal";
 import BandaValoracion from "@/components/BandaValoracion";
 import Avisame from "@/components/Avisame";
+import SeccionMapa from "@/components/SeccionMapa";
+import Servicios from "@/components/Servicios";
+import SobreNosotros from "@/components/SobreNosotros";
+import Contacto from "@/components/Contacto";
 import { inmuebles } from "@/data/inmuebles";
 import { IconoFlecha } from "@/components/Iconos";
 
@@ -36,8 +40,12 @@ export default function Inicio() {
         </div>
       </section>
 
+      <SeccionMapa />
       <BandaValoracion />
+      <Servicios />
       <Avisame />
+      <SobreNosotros />
+      <Contacto />
     </>
   );
 }

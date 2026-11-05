@@ -11,8 +11,9 @@ import { cn } from "@/lib/utils";
 export const enlacesMenu = [
   { href: "/inmuebles/?op=venta", texto: "Comprar" },
   { href: "/inmuebles/?op=alquiler", texto: "Alquilar" },
-  { href: "/#destacados", texto: "Destacados" },
-  { href: "/#avisame", texto: "Avísame" },
+  { href: "/#mapa", texto: "Mapa" },
+  { href: "/#servicios", texto: "Servicios" },
+  { href: "/#nosotros", texto: "Nosotros" },
   { href: "/#contacto", texto: "Contacto" },
 ];
 
@@ -43,7 +44,7 @@ export default function Header() {
           <Image src="/logo.png" alt="Inmobiliaria El Pasaje" width={248} height={78} priority className={cn("w-auto transition-all", scroll ? "h-10" : "h-12")} />
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex" aria-label="Menú principal">
+        <nav className="hidden items-center gap-6 xl:flex" aria-label="Menú principal">
           {enlacesMenu.map((e) => (
             <Link key={e.href} href={e.href} className="group relative text-[15px] font-medium text-tinta">
               {e.texto}
@@ -59,7 +60,7 @@ export default function Header() {
         </nav>
 
         <button
-          className="grid h-11 w-11 place-items-center rounded-full bg-white/70 text-tinta lg:hidden"
+          className="grid h-11 w-11 place-items-center rounded-full bg-white/70 text-tinta xl:hidden"
           onClick={() => setAbierto(true)}
           aria-label="Abrir menú"
         >
@@ -70,7 +71,7 @@ export default function Header() {
       <AnimatePresence>
         {abierto && (
           <motion.div
-            className="fixed inset-0 z-50 flex flex-col bg-azul lg:hidden"
+            className="fixed inset-0 z-50 flex flex-col bg-azul xl:hidden"
             initial={{ clipPath: "circle(0% at 92% 5%)" }}
             animate={{ clipPath: "circle(150% at 92% 5%)" }}
             exit={{ clipPath: "circle(0% at 92% 5%)" }}
@@ -82,10 +83,10 @@ export default function Header() {
                 <IconoCerrar />
               </button>
             </div>
-            <nav className="flex flex-1 flex-col gap-2 px-6 pt-6" aria-label="Menú móvil">
-              {[{ href: "/", texto: "Inicio" }, ...enlacesMenu, { href: "/valora-tu-casa/", texto: "Valora tu casa" }].map((e, i) => (
+            <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-6 pt-2" aria-label="Menú móvil">
+              {[{ href: "/", texto: "Inicio" }, ...enlacesMenu, { href: "/#avisame", texto: "Avísame por WhatsApp" }, { href: "/valora-tu-casa/", texto: "Valora tu casa" }].map((e, i) => (
                 <motion.div key={e.href} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.06 }}>
-                  <Link href={e.href} onClick={() => setAbierto(false)} className="block border-b border-azul-medio py-4 text-2xl font-semibold text-tinta">
+                  <Link href={e.href} onClick={() => setAbierto(false)} className="block border-b border-azul-medio py-3.5 text-xl font-semibold text-tinta">
                     {e.texto}
                   </Link>
                 </motion.div>
