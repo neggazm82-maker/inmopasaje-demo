@@ -29,21 +29,28 @@ export default function Hero() {
 
   return (
     <section ref={seccion} className="relative isolate flex min-h-[100svh] items-end overflow-hidden pb-10 pt-28 sm:items-center sm:pb-16">
-      <div className="hero-capa absolute inset-0 -z-10">
-        <div
-          ref={foto}
-          className="absolute inset-0 bg-cover bg-[center_30%] will-change-transform"
-          style={{ backgroundImage: "url(/portada.jpg)" }}
-          role="img"
-          aria-label="Terraza con vistas a los tejados de Linares (inmueble ref. 1388)"
-        />
+      <div className="hero-capa absolute inset-0 -z-10 overflow-hidden bg-tinta">
+        <div ref={foto} className="absolute inset-0 will-change-transform">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/img/hero-villa-1600.webp"
+            srcSet={[640, 1024, 1600, 2000].map((w) => `/img/hero-villa-${w}.webp ${w}w`).join(", ")}
+            sizes="100vw"
+            width={2000}
+            height={1078}
+            alt="Villa blanca de formas curvas con jardín de césped, cactus y palmeras bajo un cielo azul"
+            fetchPriority="high"
+            decoding="async"
+            className="h-full w-full object-cover object-[50%_45%]"
+          />
+        </div>
       </div>
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-tinta/70 via-tinta/55 to-tinta/90" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-tinta/60 to-transparent" />
+      {/* Capa azul oscuro al 40 % para que se lean el título y el buscador */}
+      <div className="absolute inset-0 -z-10 bg-[#1F3A5F]/40" aria-hidden />
 
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
         <motion.p
-          className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-sm font-medium text-white backdrop-blur"
+          className="mb-4 inline-flex items-center gap-2 rounded-full bg-tinta/60 px-4 py-1.5 text-sm font-medium text-white backdrop-blur"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -51,7 +58,7 @@ export default function Hero() {
           <span className="h-2 w-2 rounded-full bg-naranja" /> Inmobiliaria en Linares (Jaén)
         </motion.p>
 
-        <h1 className="max-w-4xl text-[2.25rem] font-bold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
+        <h1 className="max-w-4xl text-[2.25rem] font-bold leading-[1.05] tracking-tight text-white [text-shadow:0_2px_24px_rgba(15,30,50,.55)] sm:text-6xl lg:text-7xl">
           {palabras.map((p, i) => (
             <span key={i} className="inline-block overflow-hidden pb-1 align-bottom">
               <motion.span
