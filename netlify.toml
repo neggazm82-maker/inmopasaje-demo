@@ -1,0 +1,13 @@
+# Configuración para publicar en Netlify
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Demo privada: que los buscadores no la indexen
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

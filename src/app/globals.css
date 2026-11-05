@@ -1,26 +1,39 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-azul: #dcebfa;          /* azul pálido: fondos, menú, tarjetas */
+  --color-azul-medio: #a9cceb;    /* iconos, bordes, degradados */
+  --color-tinta: #1f3a5f;         /* textos */
+  --color-tinta-suave: #4a5f7a;   /* textos secundarios (5,4:1 sobre azul) */
+  --color-naranja: #f28c28;       /* botones, etiquetas (con texto azul oscuro) */
+  --color-naranja-texto: #a8530a; /* naranja para TEXTO sobre blanco/azul (legible) */
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html { scroll-behavior: smooth; }
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: var(--color-tinta);
+  -webkit-font-smoothing: antialiased;
 }
+
+::selection { background: var(--color-naranja); color: var(--color-tinta); }
+
+.btn-naranja {
+  @apply inline-flex items-center justify-center gap-2 rounded-full bg-naranja px-6 py-3 font-semibold text-tinta shadow-md shadow-naranja/30 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-naranja/40 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tinta;
+}
+.btn-borde {
+  @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-tinta px-6 py-3 font-semibold text-tinta transition hover:bg-tinta hover:text-white;
+}
+.campo {
+  @apply w-full rounded-xl border border-azul-medio bg-white px-4 py-3 text-tinta placeholder:text-tinta-suave/70 focus:border-tinta focus:outline-none focus:ring-2 focus:ring-azul-medio;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+/* Leaflet */
+.leaflet-container { font-family: inherit; }
+.leaflet-popup-content-wrapper { border-radius: 16px; padding: 0; overflow: hidden; }
+.leaflet-popup-content { margin: 0; width: 220px !important; }
