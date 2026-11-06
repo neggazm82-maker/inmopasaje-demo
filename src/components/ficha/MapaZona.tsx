@@ -2,11 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
+import { CAPA_MAPA } from "@/lib/mapa";
 
-export const CAPA_MAPA = {
-  url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-};
 
 export default function MapaZona({ lat, lng }: { lat: number; lng: number }) {
   const div = useRef<HTMLDivElement>(null);

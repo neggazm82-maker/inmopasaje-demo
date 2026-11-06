@@ -1,9 +1,12 @@
-// Envío de formularios con Netlify Forms (gratis hasta 100 envíos al mes).
-// Netlify reenvía cada envío por email al gerente (se activa en el panel de Netlify).
+// Envío de los formularios de la web:
+//  1) Se guardan como "Solicitud" en el panel /admin (Supabase, o este navegador en modo demo).
+//  2) Se envían también a Netlify Forms, que reenvía un email al gerente (se activa en Netlify).
+
+import { guardarSolicitud, type TipoSolicitud } from "./datos";
 
 export type Resultado = { ok: true; vistaPrevia: boolean } | { ok: false };
 
-export async function enviarFormulario(nombre: string, datos: Record<string, string>, archivos: File[] = []): Promise<Resultado> {
+async function aNetlify(nombre: string, datos: Record<string, string>, archivos: File[]): Promise<boolean> {
   const fd = new FormData();
   fd.append("form-name", nombre);
   Object.entries(datos).forEach(([k, v]) => fd.append(k, v));
@@ -14,13 +17,18 @@ export async function enviarFormulario(nombre: string, datos: Record<string, str
       body: archivos.length ? fd : new URLSearchParams(fd as unknown as Record<string, string>),
       headers: archivos.length ? undefined : { "Content-Type": "application/x-www-form-urlencoded" },
     });
-    if (r.ok) return { ok: true, vistaPrevia: false };
-    // En la vista previa (fuera de Netlify) no hay quien reciba el formulario.
-    if (esVistaPrevia()) return { ok: true, vistaPrevia: true };
-    return { ok: false };
+    return r.ok;
   } catch {
-    return esVistaPrevia() ? { ok: true, vistaPrevia: true } : { ok: false };
+    return false;
   }
+}
+
+export async function enviarFormulario(nombre: TipoSolicitud, datos: Record<string, string>, archivos: File[] = []): Promise<Resultado> {
+  const [email, panel] = await Promise.allSettled([aNetlify(nombre, datos, archivos), guardarSolicitud(nombre, datos, archivos.slice(0, 4))]);
+  const emailOk = email.status === "fulfilled" && email.value;
+  const panelOk = panel.status === "fulfilled";
+  if (!emailOk && !panelOk) return { ok: false };
+  return { ok: true, vistaPrevia: !emailOk && esVistaPrevia() };
 }
 
 const esVistaPrevia = () => typeof window !== "undefined" && !/netlify\.app$|inmopasaje\.es$/.test(window.location.hostname);

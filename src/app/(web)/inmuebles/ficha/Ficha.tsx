@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { inmuebles } from "@/data/inmuebles";
+import { useEffect, useState } from "react";
 import { empresa, whatsappUrl } from "@/data/empresa";
 import { m2 } from "@/lib/utils";
-import Galeria from "./Galeria";
-import MapaZona from "./MapaZona";
-import Hipoteca from "./Hipoteca";
+import { useInmuebles } from "@/lib/useInmuebles";
+import Galeria from "@/components/ficha/Galeria";
+import MapaZona from "@/components/ficha/MapaZona";
+import Hipoteca from "@/components/ficha/Hipoteca";
 import Precio from "@/components/Precio";
 import Etiquetas from "@/components/Etiquetas";
 import Reveal from "@/components/Reveal";
@@ -14,21 +15,36 @@ import TarjetaInmueble from "@/components/TarjetaInmueble";
 import AvisoMuestra from "@/components/AvisoMuestra";
 import { IconoCheck, IconoIzq, IconoPin, IconoTelefono, IconoWhatsApp } from "@/components/Iconos";
 
-export const dynamicParams = false;
-export function generateStaticParams() {
-  return inmuebles.map((i) => ({ ref: i.ref }));
+/** La referencia sale de la dirección: /inmuebles/1440/ (o /inmuebles/ficha/?ref=1440). */
+function leerReferencia() {
+  const q = new URLSearchParams(location.search).get("ref");
+  if (q) return q;
+  const m = location.pathname.match(/\/inmuebles\/([^/]+)\/?$/);
+  return m && m[1] !== "ficha" ? decodeURIComponent(m[1]) : "";
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ ref: string }> }): Promise<Metadata> {
-  const { ref } = await params;
-  const i = inmuebles.find((x) => x.ref === ref);
-  return { title: i ? `${i.titulo} (ref. ${i.ref})` : "Inmueble" };
-}
+export default function Ficha() {
+  const { inmuebles, cargando } = useInmuebles();
+  const [ref, setRef] = useState<string | null>(null);
+  useEffect(() => setRef(leerReferencia()), []);
+  const i = ref ? inmuebles.find((x) => x.ref === ref) : undefined;
+  useEffect(() => { if (i) document.title = `${i.titulo} (ref. ${i.ref}) | Inmobiliaria El Pasaje`; }, [i]);
 
-export default async function Ficha({ params }: { params: Promise<{ ref: string }> }) {
-  const { ref } = await params;
-  const i = inmuebles.find((x) => x.ref === ref);
-  if (!i) notFound();
+  if (ref === null || (cargando && !i)) {
+    return <div className="mx-auto max-w-7xl px-4 pt-28 pb-20 sm:px-6"><div className="h-[320px] animate-pulse rounded-3xl bg-azul sm:h-[460px]" /></div>;
+  }
+  if (!i) {
+    return (
+      <div className="mx-auto max-w-xl px-4 pt-32 pb-24 text-center">
+        <h1 className="text-3xl font-bold">Este inmueble ya no está disponible</h1>
+        <p className="mt-3 text-tinta-suave">Puede que se haya vendido o alquilado. Mira los demás o pregúntanos por algo parecido.</p>
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <Link href="/inmuebles/" className="btn-naranja">Ver inmuebles</Link>
+          <Link href="/#avisame" className="btn-borde">Avisadme de algo parecido</Link>
+        </div>
+      </div>
+    );
+  }
 
   const wa = whatsappUrl(`Hola, me interesa el inmueble ref. ${i.ref}`);
   const datos: [string, string | number | undefined][] = [
@@ -47,7 +63,7 @@ export default async function Ficha({ params }: { params: Promise<{ ref: string 
     ["Gastos de comunidad", i.gastosComunidad],
     ["IBI", i.ibi],
   ];
-  const similares = inmuebles.filter((x) => x.ref !== i.ref && (x.categoria === i.categoria || x.zona === i.zona)).slice(0, 3);
+  const similares = inmuebles.filter((x) => x.ref !== i.ref && x.estado === "disponible" && (x.categoria === i.categoria || x.zona === i.zona)).slice(0, 3);
 
   return (
     <article className="pt-24 pb-28 lg:pb-20">
@@ -128,6 +144,7 @@ export default async function Ficha({ params }: { params: Promise<{ ref: string 
           <aside className="hidden lg:block">
             <div className="sticky top-24 rounded-3xl bg-azul p-6 shadow-[0_20px_50px_-25px_rgba(31,58,95,.5)] ring-1 ring-azul-medio">
               <Precio i={i} grande />
+              {i.estado !== "disponible" && <p className="mt-3 rounded-xl bg-tinta px-3 py-2 text-sm font-semibold text-white">Este inmueble ya está {i.estado}. Pregúntanos por otros parecidos.</p>}
               <p className="mt-4 text-sm text-tinta">¿Te interesa? Te atendemos al momento.</p>
               <div className="mt-4 grid gap-3">
                 <a href={wa} target="_blank" rel="noopener noreferrer" className="btn-naranja w-full">
@@ -146,7 +163,7 @@ export default async function Ficha({ params }: { params: Promise<{ ref: string 
           <section className="mt-20">
             <h2 className="text-2xl font-bold sm:text-3xl">También te puede <span className="text-naranja-texto">interesar</span></h2>
             <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {similares.map((s, n) => <TarjetaInmueble key={s.ref} i={s} indice={n} />)}
+              {similares.map((s, n) => <TarjetaInmueble key={s.id} i={s} indice={n} />)}
             </div>
           </section>
         )}

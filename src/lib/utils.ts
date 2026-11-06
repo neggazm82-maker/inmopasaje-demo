@@ -16,8 +16,10 @@ export const rebaja = (i: Inmueble) =>
     ? { ahorro: i.precioAnterior - i.precio, pct: Math.round((1 - i.precio / i.precioAnterior) * 100) }
     : null;
 
-export const etiquetas = (i: Inmueble) => {
-  const e: { texto: string; estilo: "naranja" | "azul" }[] = [];
+export const etiquetas = (i: Inmueble & { estado?: string }) => {
+  const e: { texto: string; estilo: "naranja" | "azul" | "oscuro" }[] = [];
+  if (i.estado === "vendido") return [{ texto: "Vendido", estilo: "oscuro" as const }];
+  if (i.estado === "alquilado") return [{ texto: "Alquilado", estilo: "oscuro" as const }];
   if (i.nuevo) e.push({ texto: "Nuevo", estilo: "naranja" });
   if (rebaja(i)) e.push({ texto: "Rebajado", estilo: "naranja" });
   if (i.operacion === "alquiler") e.push({ texto: "Alquiler", estilo: "azul" });

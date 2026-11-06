@@ -1,7 +1,7 @@
 import type { Inmueble } from "@/data/inmuebles";
 import { etiquetas, cn } from "@/lib/utils";
 
-export default function Etiquetas({ i, className }: { i: Inmueble; className?: string }) {
+export default function Etiquetas({ i, className }: { i: Inmueble & { estado?: string }; className?: string }) {
   const e = etiquetas(i);
   if (!e.length) return null;
   return (
@@ -11,7 +11,7 @@ export default function Etiquetas({ i, className }: { i: Inmueble; className?: s
           key={x.texto}
           className={cn(
             "rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide shadow-sm",
-            x.estilo === "naranja" ? "bg-naranja text-tinta" : "bg-azul text-tinta ring-1 ring-azul-medio",
+            x.estilo === "naranja" ? "bg-naranja text-tinta" : x.estilo === "oscuro" ? "bg-tinta text-white" : "bg-azul text-tinta ring-1 ring-azul-medio",
           )}
         >
           {x.texto}

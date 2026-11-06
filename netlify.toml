@@ -11,3 +11,15 @@
   for = "/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
+
+# Todas las fichas (/inmuebles/1440/) se sirven desde una sola página,
+# así los inmuebles nuevos del panel tienen ficha al momento.
+[[redirects]]
+  from = "/inmuebles/:ref/"
+  to = "/inmuebles/ficha/"
+  status = 200
+
+[[redirects]]
+  from = "/inmuebles/:ref"
+  to = "/inmuebles/ficha/"
+  status = 200

@@ -1,4 +1,8 @@
+import { modoDemo } from "@/data/conexion";
+
+/** Solo se ve mientras la web usa los inmuebles de muestra (sin Supabase conectado). */
 export default function AvisoMuestra() {
+  if (!modoDemo) return null;
   return (
     <p className="inline-flex items-center gap-2 rounded-full bg-azul px-3 py-1 text-xs font-medium text-tinta ring-1 ring-azul-medio">
       <span className="h-1.5 w-1.5 rounded-full bg-naranja" />

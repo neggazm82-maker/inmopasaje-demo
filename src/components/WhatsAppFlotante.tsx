@@ -7,7 +7,7 @@ import { IconoWhatsApp } from "./Iconos";
 
 export default function WhatsAppFlotante() {
   // En la ficha del móvil hay una barra fija abajo: subimos el botón.
-  const enFicha = /^\/inmuebles\/\d+/.test(usePathname() ?? "");
+  const enFicha = /^\/inmuebles\/(ficha|[^/]+\/?$)/.test(usePathname() ?? "");
   return (
     <motion.a
       href={whatsappUrl("Hola, os escribo desde vuestra web. Me gustaría información.")}

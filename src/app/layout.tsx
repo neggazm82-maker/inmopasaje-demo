@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import WhatsAppFlotante from "@/components/WhatsAppFlotante";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -29,15 +26,7 @@ export const viewport: Viewport = { themeColor: "#DCEBFA" };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className={poppins.variable}>
-      <body className="font-sans">
-        <a href="#contenido" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2">
-          Saltar al contenido
-        </a>
-        <Header />
-        <main id="contenido">{children}</main>
-        <Footer />
-        <WhatsAppFlotante />
-      </body>
+      <body className="font-sans">{children}</body>
     </html>
   );
 }

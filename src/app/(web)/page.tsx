@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
 import Contadores from "@/components/Contadores";
-import TarjetaInmueble from "@/components/TarjetaInmueble";
+import Destacados from "@/components/Destacados";
 import AvisoMuestra from "@/components/AvisoMuestra";
 import Reveal from "@/components/Reveal";
 import BandaValoracion from "@/components/BandaValoracion";
@@ -10,7 +10,6 @@ import SeccionMapa from "@/components/SeccionMapa";
 import Servicios from "@/components/Servicios";
 import SobreNosotros from "@/components/SobreNosotros";
 import Contacto from "@/components/Contacto";
-import { inmuebles } from "@/data/inmuebles";
 import { IconoFlecha } from "@/components/Iconos";
 
 export default function Inicio() {
@@ -34,9 +33,7 @@ export default function Inicio() {
             </Link>
           </Reveal>
 
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {inmuebles.slice(0, 6).map((i, n) => <TarjetaInmueble key={i.ref} i={i} indice={n} />)}
-          </div>
+          <Destacados />
         </div>
       </section>
 

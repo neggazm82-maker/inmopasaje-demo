@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import { empresa } from "@/data/empresa";
-import { CAPA_MAPA } from "@/app/inmuebles/[ref]/MapaZona";
+import { CAPA_MAPA } from "@/lib/mapa";
 
 export default function MapaOficina() {
   const div = useRef<HTMLDivElement>(null);

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import { zonasLinares } from "@/data/zonas";
-import { CAPA_MAPA } from "@/app/inmuebles/[ref]/MapaZona";
+import { CAPA_MAPA } from "@/lib/mapa";
 
 /** Mapa de Linares con un punto por zona: al tocarlo se elige la zona. */
 export default function MapaZonas({ elegida, elegir }: { elegida: string; elegir: (z: string) => void }) {

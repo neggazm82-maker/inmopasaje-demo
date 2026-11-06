@@ -3,10 +3,12 @@
 import dynamic from "next/dynamic";
 import Reveal from "./Reveal";
 import AvisoMuestra from "./AvisoMuestra";
+import { useInmuebles } from "@/lib/useInmuebles";
 
 const MapaInmuebles = dynamic(() => import("./MapaInmuebles"), { ssr: false, loading: () => <div className="h-full animate-pulse bg-azul" /> });
 
 export default function SeccionMapa() {
+  const { inmuebles } = useInmuebles();
   return (
     <section id="mapa" className="scroll-mt-20 bg-azul py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -19,7 +21,7 @@ export default function SeccionMapa() {
           <div className="mt-4"><AvisoMuestra /></div>
         </Reveal>
         <Reveal delay={0.1} className="mt-8 h-[460px] overflow-hidden rounded-[2rem] bg-white shadow-xl shadow-tinta/10 ring-4 ring-white sm:h-[560px]">
-          <MapaInmuebles />
+          <MapaInmuebles inmuebles={inmuebles} />
         </Reveal>
       </div>
     </section>

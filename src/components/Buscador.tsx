@@ -3,11 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { inmuebles } from "@/data/inmuebles";
+import { zonasLinares } from "@/data/zonas";
 import { IconoLupa } from "./Iconos";
 import { cn, miles, nombreCategoria } from "@/lib/utils";
 
-const zonas = Array.from(new Set(inmuebles.map((i) => i.zona))).sort();
+const zonas = zonasLinares.map((z) => z.nombre);
 const preciosVenta = [30000, 60000, 80000, 100000, 130000, 150000, 200000, 300000];
 const preciosAlquiler = [300, 500, 700, 1000, 1500];
 

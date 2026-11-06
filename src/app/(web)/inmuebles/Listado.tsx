@@ -3,15 +3,17 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { inmuebles } from "@/data/inmuebles";
+import { zonasLinares } from "@/data/zonas";
+import { useInmuebles } from "@/lib/useInmuebles";
 import TarjetaInmueble from "@/components/TarjetaInmueble";
 import AvisoMuestra from "@/components/AvisoMuestra";
 import { cn, miles, nombreCategoria } from "@/lib/utils";
 
-const zonas = Array.from(new Set(inmuebles.map((i) => i.zona))).sort();
+const zonas = zonasLinares.map((z) => z.nombre);
 
 export default function Listado() {
   const sp = useSearchParams();
+  const { inmuebles, cargando } = useInmuebles();
   const router = useRouter();
   const op = sp.get("op") ?? "";
   const tipo = sp.get("tipo") ?? "";
@@ -85,7 +87,8 @@ export default function Listado() {
         </AnimatePresence>
       </motion.div>
 
-      {lista.length === 0 && (
+      {cargando && <p className="mt-6 text-center text-tinta-suave">Cargando inmuebles…</p>}
+      {!cargando && lista.length === 0 && (
         <div className="mt-6 rounded-3xl bg-azul p-8 text-center">
           <p className="text-lg font-semibold">No hay inmuebles con esos filtros ahora mismo.</p>
           <p className="mt-2 text-tinta-suave">Prueba a quitar algún filtro o deja tu búsqueda y te avisamos cuando entre uno.</p>
