@@ -1,0 +1,3 @@
+# Fichas de inmuebles: /inmuebles/1440/ se sirve desde una sola página
+/inmuebles/:ref/  /inmuebles/ficha/  200
+/inmuebles/:ref   /inmuebles/ficha/  200
